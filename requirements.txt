@@ -1,11 +1,11 @@
-jupyter==1.0.0
+jupyter==1.0.0 
 requests==2.31.0
 pandas==2.0.2
 matplotlib==3.7.5
 seaborn==0.13.2
 plotly==5.18.0
 PyPDF2==3.0.1
-PyAutoGUI==0.9.54
+PyAutoGUI==0.9.54 
 folium==0.15.1
 beautifulsoup4==4.12.3
 pycoingecko==3.1.0

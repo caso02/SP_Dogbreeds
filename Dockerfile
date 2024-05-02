@@ -1,29 +1,15 @@
 FROM python:3.8
 
-# Installieren der notwendigen Systembibliotheken
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libfreetype6-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libtiff5-dev \
-    libopencv-dev \
-    tesseract-ocr \
-    libtesseract-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update
+RUN apt install python3-pip -y
+RUN pip install --upgrade pip
 
-# Arbeitsverzeichnis im Container festlegen
+
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
 WORKDIR /app
 
-# Abhängigkeiten installieren
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 
-# Den Rest des aktuellen Verzeichnisses in das Arbeitsverzeichnis des Containers kopieren
-COPY . /app/
-
-# Port freigeben
-EXPOSE 5000
-
-# App starten
-CMD ["python", "app.py"]
+CMD [ "python3", "-m", "flask", "run", "--host=0.0.0.0" ]
