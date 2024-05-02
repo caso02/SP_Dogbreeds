@@ -1,2 +1,13 @@
 # Ignore data files
 /data/*
+
+# Ignore DS_Store
+.DS_Store
+
+# Ignore Cache and Logs
+*.log
+*.pot
+*.pyc
+*/*/*/__pycache__/
+*/*/__pycache__/
+*/__pycache__/
