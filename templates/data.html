@@ -2,7 +2,9 @@
 
 {% block content %}
     <h1>Daten aus der SQLite-Datenbank</h1>
-    {% for table in tables %}
-        {{ table|safe }}
-    {% endfor %}
+    <div class="table">
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
 {% endblock %}
