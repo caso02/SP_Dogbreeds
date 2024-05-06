@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <style>
+        table {
+            margin-top: 20px;
+        }
+
+        .toggle-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .toggle-item {
+            flex-basis: calc(33.33% - 10px);
+        }
+
+        .form-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-switch input[type="checkbox"] {
+            width: 42px;
+            height: 24px;
+            margin: 0;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        .form-switch input[type="checkbox"]:checked {
+            background-color: #0d6efd;
+        }
+
+        .form-switch input[type="checkbox"]:before {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid black;
+            background: white;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .form-switch input[type="checkbox"]:checked:before {
+            transform: translateX(18px);
+        }
+    </style>
+
+    <h1>Find your dream dog based on character traits</h1>
+    <form action="/filter" method="POST">
+        <label for="traits">Select character traits:</label>
+        <div class="toggle-container">
+            {% for trait in traits %}
+                <div class="toggle-item">
+                    <label class="form-switch">
+                        <input type="checkbox" name="traits" value="{{ trait }}">
+                        {{ trait.capitalize() }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <hr>
+    
+    {% if breeds %}
+        <br>
+        <h2>Results:</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Breed</th>
+                    <th>Origin</th>
+                    <th>Fur colors</th>
+                    <th>Size (in inches)</th>
+                    <th>Eye color</th>
+                    <th>Lifespan (in years)</th>
+                    <th>Character traits</th>
+                    <th>Common health problems</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in breeds %}
+                    <tr>
+                        <td>{{ row[0] }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                        <td>{{ row[4] }}</td>
+                        <td>{{ row[5] }}</td>
+                        <td>{{ row[6] }}</td>
+                        <td>{{ row[7] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <br>
+        <h2>No suitable dogs found</h2>
+        <p>Try other character traits or expand your search.</p>
+    {% endif %}
+{% endblock %}

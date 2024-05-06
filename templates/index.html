@@ -1,7 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Index {% endblock %}</h1>
-    <h1>Hello World!</h1>
-    <h2>Welcome to FlaskApp!</h2>
+
+    <style>
+        form{
+            display: flex;
+            align-items: center;
+        }
+
+        form .form-label{
+            margin: 0;
+        }
+    </style>
+
+    <h1>Find information about a dog breed</h1>
+    <form action="/" method="POST" class="form-inline my-3">
+        <label for="breed_search" class="form-label me-2">Breed search:</label>
+        <input type="text" name="breed_search" id="breed_search" class="form-control me-2" placeholder="Enter the breed">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <hr>
+    
+    {% if result %}
+    <br>
+    <h2>Results:</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Breed</th>
+                <th>Origin</th>
+                <th>Fur colors</th>
+                <th>Size (in inches)</th>
+                <th>Eye color</th>
+                <th>Lifespan (in years)</th>
+                <th>Character traits</th>
+                <th>Common health problems</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in result %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                    <td>{{ row[7] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <!-- jQuery und jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Autocomplete für das Textfeld
+            $.get('/get_all_breeds', function(data) {
+                $('#breed_search').autocomplete({
+                    source: data
+                });
+            });
+        });
+    </script>
 {% endblock %}
