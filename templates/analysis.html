@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Diagrams from analysis</h1>
+    <hr>
+    <h3>Correlation diagrams</h3>
+    <div class="row">
+        {% for image in general_images %}
+            <div class="col-md-6 mb-6">
+                <img src="{{ url_for('static', filename='diagrams/' + image) }}" class="img-fluid" alt="{{ image }}">
+            </div>
+        {% endfor %}
+    </div>
+    
+    <br>
+    <hr>
+
+    <h3>T-Test diagrams</h3>
+    <div class="row">
+        {% for image in ttest_images %}
+            <div class="col-md-6 mb-6">
+                <img src="{{ url_for('static', filename='diagrams/ttest/' + image) }}" class="img-fluid" alt="{{ image }}">
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

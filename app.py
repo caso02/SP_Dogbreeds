@@ -2,11 +2,12 @@ from flask import Flask, request, render_template, jsonify
 import sqlite3
 import pandas as pd
 import re
+import os
 
 app = Flask(__name__)
 DB_PATH = 'data/dog_breeds.db'
 
-# Route um alle Hunderassen zu bekommen
+# Route, um alle Hunderassen zu bekommen
 @app.route('/get_all_breeds', methods=['GET'])
 def get_all_breeds():
     conn = sqlite3.connect(DB_PATH)
@@ -28,19 +29,18 @@ def hello():
         conn.close()
     return render_template('index.html', result=result)
 
-
 # Route für die Suche nach Charaktereigenschaften
 def get_unique_traits_from_db():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT [Character Traits] FROM cleaned_data")
+    cursor.execute("SELECT DISTINCT character_traits FROM cleaned_data")
     all_traits = set()
-    
+
     for row in cursor.fetchall():
         traits = row[0].lower() if row[0] else ''
         traits_list = re.split(r',\s*', traits)
         all_traits.update(traits_list)
-    
+
     conn.close()
     return sorted(all_traits)
 
@@ -48,11 +48,11 @@ def get_unique_traits_from_db():
 def filter():
     breeds = None
     all_traits = get_unique_traits_from_db()
-    
+
     if request.method == 'POST':
         traits = request.form.getlist('traits')
         if traits:
-            trait_conditions = ' AND '.join([f"LOWER([Character Traits]) LIKE '%{trait.lower()}%'" for trait in traits])
+            trait_conditions = ' AND '.join([f"LOWER(character_traits) LIKE '%{trait.lower()}%'" for trait in traits])
             query = f"SELECT * FROM cleaned_data WHERE {trait_conditions}"
             conn = sqlite3.connect(DB_PATH)
             cursor = conn.cursor()
@@ -61,14 +61,22 @@ def filter():
             conn.close()
     return render_template('filter.html', breeds=breeds, traits=all_traits)
 
-
-# Route für anzeigen aller Daten
+# Route zum Anzeigen aller Daten
 @app.route('/data/')
 def data():
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query('SELECT * FROM cleaned_data', conn)
     conn.close()
     return render_template('data.html', tables=[df.to_html(classes='data', escape=False)], titles=df.columns.values)
+
+
+@app.route('/analysis')
+def analysis():
+    # Liste aller Bilder im Verzeichnis diagrams/ttest
+    ttest_images = [img for img in os.listdir('static/diagrams/ttest') if img.endswith('.png')]
+    # Liste aller allgemeinen Diagramme im Verzeichnis diagrams
+    general_images = [img for img in os.listdir('static/diagrams') if img.endswith('.png') and not img.startswith('ttest')]
+    return render_template('analysis.html', ttest_images=ttest_images, general_images=general_images)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -11,3 +11,6 @@
 */*/*/__pycache__/
 */*/__pycache__/
 */__pycache__/
+
+# Ignore images
+/static/*

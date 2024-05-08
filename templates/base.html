@@ -59,6 +59,9 @@
                         <a class="nav-link {% if request.endpoint == 'filter' %}active{% endif %}" href="{{ url_for('filter') }}">Filter</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'analysis' %}active{% endif %}" href="{{ url_for('analysis') }}">Analysis</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.endpoint == 'data' %}active{% endif %}" href="{{ url_for('data') }}">Data</a>
                     </li>
                 </ul>
