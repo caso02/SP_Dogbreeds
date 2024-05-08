@@ -6,7 +6,7 @@ import re
 app = Flask(__name__)
 DB_PATH = 'data/dog_breeds.db'
 
-# Route für die Rassensuche
+# Route um alle Hunderassen zu bekommen
 @app.route('/get_all_breeds', methods=['GET'])
 def get_all_breeds():
     conn = sqlite3.connect(DB_PATH)
